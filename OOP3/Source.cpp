@@ -1,6 +1,17 @@
 #include <iostream>
-#include <cstring>
+#include <string>
 using namespace std;
+
+
+/*
+	1. возможность создания от класса std::string
+	2. операторы к реализации: ==, +=, !
+	3. доступ к отдельным символам строки
+		std::string str{"qwerty"};
+		str[2]
+		str.at(2);
+	4. предоставлять доступ к сырым данным
+*/
 
 class String {
 public:
@@ -9,6 +20,42 @@ public:
 
 		cout << this << " Base object created\n";
 	}
+
+	String(string str): String() {
+		//узнать сколько символов в str
+		capacity = str.size();
+		size = str.size();
+		//выделить под них память
+		data = new char[size] {};
+		//скопировать данные из str
+		::memcpy(data, &(str[0]), size);
+
+	}
+
+	//операторы
+	bool operator==(const String&& other) {
+		if (this->size != other.size) return false;
+		for (int i = 0; i < this->size; i++){
+			if (this->data[i] != other.data[i]) return false;
+		}
+		return true;
+	}
+
+	bool operator!=(const String&& other) {
+		if (this->size == other.size) return false;
+		for (int i = 0; i < this->size; i++) {
+			if (this->data[i] == other.data[i]) return false;
+		}
+		return true;
+	}
+
+	bool operator+=();
+
+
+	//bool operator!();
+	operator (bool)(String str);
+	char& operator[](int i);
+	const char& operator[](int i)const;
 
 	explicit String(int length) : String() {
 		capacity = length;
@@ -87,7 +134,6 @@ void F00(String obj) {
 int main() {
 	setlocale(LC_ALL, "Russian");
 
-	
 	String a;
 	String b(5);
 	//a = b = static_cast<String>(8);
